@@ -22,12 +22,15 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_CalRoutes_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     QGraphicsView *view;
     Pose robot;
     Pose destination;
+    static int maxCnt;
 };
 
 #endif // MAINWINDOW_H

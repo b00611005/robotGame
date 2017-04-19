@@ -20,5 +20,8 @@ static const char movements[3] = {'L','R','M'};
 //method
 void setPose(int, int, char, Pose*);
 bool robotMove(char, Pose*);
-void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate,int cnt);
+void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose* robot, Pose* dest, int cnt, int maxCnt);
+//void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate,int cnt);
+bool comparePose(Pose* orign, Pose* target);
+void copyPose(Pose* orign, Pose* target);
 #endif // ROBOT_H

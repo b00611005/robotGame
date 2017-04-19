@@ -14,9 +14,28 @@ static const int moves[5] = {0, 1, 0, -1, 0};
 
 static const char movements[3] = {'L','R','M'};
 
-static int maxCnt;
+//static int maxCnt;
 
-std::vector< std::vector<char> > routes;
+//std::vector< std::vector<char> > routes;
+
+void copyPose(Pose orign, Pose* target){
+//    printf("(%d, %d, %d)\n", orign->x,orign->y, orign->dir);
+//    fflush(stdout);
+//    int x = target->x;
+//    orign->x = x;
+    target->x = orign.x;
+    target->y = orign.y;
+    target-> dir = orign.dir;
+//    printf("(%d, %d, %d)\n", orign.x,orign.y, orign.dir);
+//    fflush(stdout);
+}
+
+bool comparePose(Pose* orign, Pose* target){
+    if(orign->x == target->x && orign->y == target->y && orign->dir == target->dir)
+        return true;
+    else
+        return false;
+}
 
 void setPose(int x, int y, char dir, Pose* object){
     object->x = x;
@@ -40,26 +59,26 @@ void setPose(int x, int y, char dir, Pose* object){
 
 bool robotMove(char move, Pose* robot){
     //Turn
-    if(move == 'L' || move == 'R'){
+    if(move == 'L' || move == 'R' || move == 'l' || move == 'r'){
         if(move == 'L'){
             robot->dir--;
-        }else if(move == 'R'){
+        }else if(move == 'R' || move == 'r'){
             robot->dir++;
         }
         if(robot->dir < 0) robot->dir+=4;
         robot->dir = robot->dir % 4;
-    }else if(move == 'M'){
+    }else if(move == 'M' || move == 'm'){
         int futureX = robot->x + moves[robot->dir];
         int futureY = robot->y + moves[(robot->dir+1)%4];
         if( futureX == 0 || futureX == BOARDSIZE || futureY ==0 || futureY == BOARDSIZE){
-            fprintf(stderr, "Invalid Move : Bump in the wall");
+//            fprintf(stderr, "Invalid Move : Bump in the wall\n");
             return false;
         }else{
             robot->x = futureX;
             robot->y = futureY;
         }
     }else{
-        fprintf(stderr,"Invalid Move : Unrecognized Command.");
+//        fprintf(stderr,"Invalid Move : Unrecognized Command.\n");
         return false;
     }
     return true;
@@ -67,19 +86,38 @@ bool robotMove(char move, Pose* robot){
 }
 
 
-//void dfs(int cnt, std::vector<std::vector<char> > &routes, std::vector<char> &candidate){
+//void dfs(int cnt, std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose* robot){
 //    if( cnt > maxCnt )	return;
 
 //     for (int i = 0; i < (int)strlen(movements); i++){
-//        int orignX = robot.x;
-//        int orignY = robot.y;
-//        int orignDir = robot.dir;
-//        move(movements[i]);
+//        int orignX = robot->x;
+//        int orignY = robot->y;
+//        int orignDir = robot->dir;
+//        robotMove(movements[i], robot);
 //        candidate.push_back(movements[i]);
-//        // dfs(routes, &candidate, robot.x, robot.y, robot.dir, )
+//         dfs(routes, &candidate, robot.x, robot.y, robot.dir, )
 //     }
-
 //     return;
 //}
 
+
+void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose* robot, Pose* dest, int cnt, int maxCnt){
+//    printf("Cnt: %d\n", cnt);
+//    fflush(stdout);
+    if(comparePose(robot, dest)){
+        routes.push_back(candidate);
+        return;
+    }
+    if( cnt > maxCnt )	return;
+    Pose backup;
+    for (int i = 0; i < (int)strlen(movements); i++){
+        copyPose(*robot, &backup);
+        robotMove(movements[i], robot);
+        candidate.push_back(movements[i]);
+        dfs(routes, candidate, robot, dest, cnt+1, maxCnt );
+        copyPose(backup, robot);
+        candidate.pop_back();
+    }
+    return;
+}
 
