@@ -3,6 +3,7 @@
 #include "string"
 #include "vector"
 #include <QDebug>
+#include <QTimeLine>
 #include <QGraphicsItem>
 #include <QGraphicsItemAnimation>
 
@@ -35,46 +36,54 @@ bool comparePose(Pose* orign, Pose* target){
         return false;
 }
 
-void moveIcon(Pose* target, QGraphicsItem* rb){
-    rb->setPos((target->x-1)*STEP+OFFSET, (8-target->y)*STEP+OFFSET);
-    switch(target->dir){
-        case 0:
-            rb->setRotation(-90);
-            break;
-        case 1:
-            rb->setRotation(0);
-            break;
-        case 2:
-            rb->setRotation(90);
-            break;
-        case 3:
-            rb->setRotation(180);
-            break;
-    }
+void moveIcon(int orgX, int orgY, int targetX, int targetY, int orgDir, int dir, QGraphicsItemAnimation* rb){
+
+    QTimeLine* timeLine = new QTimeLine;
+//        rb->setRotationAt(0, orgDir);
+//            if(dir == 1)
+//               rb->setRotationAt(1, 90*dir);
+//            else
+//                rb->setRotationAt(1, 90*dir);
+        rb->setTimeLine(timeLine);
+//        qDebug()<<rb->xTranslationAt(0) <<rb->yTranslationAt(0);
+//        rb->setTranslationAt(0, 0,0);
+//        rb->setPosAt(1, QPoint((targetX-orgX)*STEP, -(targetY-orgY)*STEP));
+                rb->setPosAt(0,QPoint(0,0));
+        rb->setTranslationAt(1, 10,10);
+
+            timeLine->setUpdateInterval(40);
+            timeLine->setLoopCount(1);
+            timeLine->setDuration(1000);
+            timeLine->start();
 }
 
 void setPose(int x, int y, char dir, Pose* object, QGraphicsItem * rb){
     object->x = x;
     object->y = y;
+    rb->setPos((object->x-1)*STEP+OFFSET, (8-object->y)*STEP+OFFSET);
+
     switch(dir){
         case 'N':
             object->dir = 0;
+            rb->setRotation(-90);
             break;
         case 'E':
             object->dir = 1;
+            rb->setRotation(0);
             break;
         case 'S':
             object->dir = 2;
+            rb->setRotation(180);
             break;
         case 'W':
             object->dir = 3;
+            rb->setRotation(270);
             break;
     }
-    moveIcon(object, rb);
 }
 
 
-bool robotMove(char move, Pose* robot, QGraphicsItem * rb = NULL){
+bool robotMove(char move, Pose* robot, QGraphicsItemAnimation * rb = NULL){
     //Turn
     if(move == 'L' || move == 'R' || move == 'l' || move == 'r'){
         if(move == 'L' || move =='l'){
@@ -84,13 +93,15 @@ bool robotMove(char move, Pose* robot, QGraphicsItem * rb = NULL){
         }
         if(robot->dir < 0) robot->dir+=4;
         robot->dir = robot->dir % 4;
+
     }else if(move == 'M' || move == 'm'){
         int futureX = robot->x + moves[robot->dir];
         int futureY = robot->y + moves[(robot->dir+1)%4];
-        if( futureX == 0 || futureX == BOARDSIZE || futureY ==0 || futureY == BOARDSIZE){
+        if( futureX == 0 || futureX > BOARDSIZE || futureY ==0 || futureY > BOARDSIZE){
 //            fprintf(stderr, "Invalid Move : Bump in the wall\n");
             return false;
         }else{
+            moveIcon(robot->x,robot->y, futureX, futureY ,0 ,0, rb );
             robot->x = futureX;
             robot->y = futureY;
         }
@@ -98,10 +109,7 @@ bool robotMove(char move, Pose* robot, QGraphicsItem * rb = NULL){
 //        fprintf(stderr,"Invalid Move : Unrecognized Command.\n");
         return false;
     }
-
         // printf("Robot: (%d, %d, %d) \n", robot.x, robot.y, robot.dir);
-    if(rb!=NULL)
-        moveIcon(robot,rb);
     return true;
 }
 

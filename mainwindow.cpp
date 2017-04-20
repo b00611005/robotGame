@@ -43,23 +43,25 @@ MainWindow::MainWindow(QWidget *parent) :
     setPose(ui->spinBoxIniX->value(),ui->spinBoxIniY->value(),ui->comboBox_Direction->currentText().toStdString().c_str()[0],&this->robot,this->robotIcon);
     scene->addItem(bgd);
     scene->addItem(robotIcon);
-    robotIcon->setFlag(QGraphicsItem::ItemIsMovable);
+//    robotIcon->setFlag(QGraphicsItem::ItemIsMovable);
 
     //Animation Zone
-    timeLine = new QTimeLine;
+//    timeLine = new QTimeLine;
 
     robotAnimation = new QGraphicsItemAnimation;
          robotAnimation->setItem(robotIcon);
-         robotAnimation->setTimeLine(timeLine);
-//              robotAnimation->setRotationAt(0, 0);
-//              robotAnimation->setRotationAt(1, 270);
          robotAnimation->setTranslationAt(0,0,0);
-         robotAnimation->setTranslationAt(1,0,-56);
+//         robotAnimation->setTimeLine(timeLine);
+////              robotAnimation->setRotationAt(0, 0);
+////              robotAnimation->setRotationAt(1, 90);
+////         robotAnimation->setTranslationAt(0,0,0);
+////         robotAnimation->setTranslationAt(1,0,-56);
 
-    timeLine->setUpdateInterval(40);
-    timeLine->setLoopCount(1);
-    timeLine->setDuration(1000);
-    timeLine->start();
+//    timeLine->setUpdateInterval(40);
+//    timeLine->setLoopCount(0);
+//    timeLine->setCurveShape(QTimeLine::SineCurve);
+//    timeLine->setDuration(1000);
+//    timeLine->start();
 
 
     ui->graphicsView->setScene(scene);
@@ -79,7 +81,7 @@ void MainWindow::on_pushButton_clicked()
     QStringList moves = ui->textEdit_moves->toPlainText().split(',');
 
     for(int i = 0; i < moves.length(); i++){
-        robotMove(moves.at(i).toStdString()[0], &this->robot, this->robotIcon);
+        robotMove(moves.at(i).toStdString()[0], &this->robot, this->robotAnimation);
 //        robotAnimation->setTranslationAt(0,0,0);
 //        robotAnimation->setTranslationAt(1,robot);
     }
