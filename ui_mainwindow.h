@@ -69,6 +69,7 @@ public:
     QTableWidget *tableWidget;
     QLabel *label_14;
     QSpinBox *spinBox_maxSteps;
+    QPushButton *GUIsetPoseButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -226,6 +227,9 @@ public:
         spinBox_maxSteps->setMinimum(1);
         spinBox_maxSteps->setMaximum(99);
         tabWidget->addTab(tab_2, QString());
+        GUIsetPoseButton = new QPushButton(centralWidget);
+        GUIsetPoseButton->setObjectName(QStringLiteral("GUIsetPoseButton"));
+        GUIsetPoseButton->setGeometry(QRect(350, 0, 91, 31));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -239,6 +243,9 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         retranslateUi(MainWindow);
+        QObject::connect(spinBoxIniX, SIGNAL(valueChanged(int)), GUIsetPoseButton, SLOT(click()));
+        QObject::connect(spinBoxIniY, SIGNAL(valueChanged(int)), GUIsetPoseButton, SLOT(click()));
+        QObject::connect(comboBox_Direction, SIGNAL(activated(int)), GUIsetPoseButton, SLOT(click()));
 
         tabWidget->setCurrentIndex(0);
 
@@ -272,6 +279,7 @@ public:
         pushButton_CalRoutes->setText(QApplication::translate("MainWindow", "Calculate", 0));
         label_14->setText(QApplication::translate("MainWindow", "Maximum Steps", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", 0));
+        GUIsetPoseButton->setText(QApplication::translate("MainWindow", "GUIsetPose", 0));
     } // retranslateUi
 
 };

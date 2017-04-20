@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsItem>
+#include <QTimeline>
+#include <QGraphicsItemAnimation>
 #include "robot.h"
 
 namespace Ui {
@@ -24,12 +26,19 @@ private slots:
 
     void on_pushButton_CalRoutes_clicked();
 
+    void on_GUIsetPoseButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     QGraphicsView *view;
+    QGraphicsItem *robotIcon;
     Pose robot;
     Pose destination;
+    //Animation
+    QTimeLine* timeLine;
+    QGraphicsItemAnimation *robotAnimation;
+
     static int maxCnt;
 };
 

@@ -1,10 +1,10 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include "stdio.h"
-#include "stdlib.h"
-#include "string"
-#include "vector"
+//#include "stdio.h"
+//#include "stdlib.h"
+//#include "string"
+//#include "vector"
 
 #define BOARDSIZE 8
 
@@ -18,8 +18,8 @@ static const char movements[3] = {'L','R','M'};
 
 
 //method
-void setPose(int, int, char, Pose*);
-bool robotMove(char, Pose*);
+void setPose(int, int, char, Pose*, QGraphicsItem*);
+bool robotMove(char, Pose*, QGraphicsItem* = NULL);
 void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose* robot, Pose* dest, int cnt, int maxCnt);
 //void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate,int cnt);
 bool comparePose(Pose* orign, Pose* target);

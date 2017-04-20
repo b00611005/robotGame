@@ -2,7 +2,13 @@
 #include "stdlib.h"
 #include "string"
 #include "vector"
+#include <QDebug>
+#include <QGraphicsItem>
+#include <QGraphicsItemAnimation>
+
 #define BOARDSIZE 8
+#define STEP 56
+#define OFFSET 10
 
 struct Pose{
     int x;
@@ -14,20 +20,12 @@ static const int moves[5] = {0, 1, 0, -1, 0};
 
 static const char movements[3] = {'L','R','M'};
 
-//static int maxCnt;
-
-//std::vector< std::vector<char> > routes;
-
 void copyPose(Pose orign, Pose* target){
-//    printf("(%d, %d, %d)\n", orign->x,orign->y, orign->dir);
-//    fflush(stdout);
-//    int x = target->x;
-//    orign->x = x;
+
     target->x = orign.x;
     target->y = orign.y;
     target-> dir = orign.dir;
-//    printf("(%d, %d, %d)\n", orign.x,orign.y, orign.dir);
-//    fflush(stdout);
+
 }
 
 bool comparePose(Pose* orign, Pose* target){
@@ -37,7 +35,25 @@ bool comparePose(Pose* orign, Pose* target){
         return false;
 }
 
-void setPose(int x, int y, char dir, Pose* object){
+void moveIcon(Pose* target, QGraphicsItem* rb){
+    rb->setPos((target->x-1)*STEP+OFFSET, (8-target->y)*STEP+OFFSET);
+    switch(target->dir){
+        case 0:
+            rb->setRotation(-90);
+            break;
+        case 1:
+            rb->setRotation(0);
+            break;
+        case 2:
+            rb->setRotation(90);
+            break;
+        case 3:
+            rb->setRotation(180);
+            break;
+    }
+}
+
+void setPose(int x, int y, char dir, Pose* object, QGraphicsItem * rb){
     object->x = x;
     object->y = y;
     switch(dir){
@@ -54,13 +70,14 @@ void setPose(int x, int y, char dir, Pose* object){
             object->dir = 3;
             break;
     }
+    moveIcon(object, rb);
 }
 
 
-bool robotMove(char move, Pose* robot){
+bool robotMove(char move, Pose* robot, QGraphicsItem * rb = NULL){
     //Turn
     if(move == 'L' || move == 'R' || move == 'l' || move == 'r'){
-        if(move == 'L'){
+        if(move == 'L' || move =='l'){
             robot->dir--;
         }else if(move == 'R' || move == 'r'){
             robot->dir++;
@@ -81,15 +98,17 @@ bool robotMove(char move, Pose* robot){
 //        fprintf(stderr,"Invalid Move : Unrecognized Command.\n");
         return false;
     }
-    return true;
+
         // printf("Robot: (%d, %d, %d) \n", robot.x, robot.y, robot.dir);
+    if(rb!=NULL)
+        moveIcon(robot,rb);
+    return true;
 }
 
 
 
 void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose* robot, Pose* dest, int cnt, int maxCnt){
-//    printf("Cnt: %d\n", cnt);
-//    fflush(stdout);
+
     if(comparePose(robot, dest)){
         routes.push_back(candidate);
         return;
