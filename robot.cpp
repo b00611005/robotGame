@@ -86,20 +86,6 @@ bool robotMove(char move, Pose* robot){
 }
 
 
-//void dfs(int cnt, std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose* robot){
-//    if( cnt > maxCnt )	return;
-
-//     for (int i = 0; i < (int)strlen(movements); i++){
-//        int orignX = robot->x;
-//        int orignY = robot->y;
-//        int orignDir = robot->dir;
-//        robotMove(movements[i], robot);
-//        candidate.push_back(movements[i]);
-//         dfs(routes, &candidate, robot.x, robot.y, robot.dir, )
-//     }
-//     return;
-//}
-
 
 void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose* robot, Pose* dest, int cnt, int maxCnt){
 //    printf("Cnt: %d\n", cnt);

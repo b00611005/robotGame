@@ -77,12 +77,21 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
+        MainWindow->setEnabled(true);
         MainWindow->resize(919, 570);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
+        MainWindow->setSizePolicy(sizePolicy);
+        MainWindow->setMinimumSize(QSize(919, 570));
+        MainWindow->setMaximumSize(QSize(919, 570));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         graphicsView = new QGraphicsView(centralWidget);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(10, 20, 500, 500));
+        graphicsView->setGeometry(QRect(10, 29, 500, 500));
+        graphicsView->setAutoFillBackground(true);
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setGeometry(QRect(530, 20, 361, 481));
@@ -90,7 +99,7 @@ public:
         tab->setObjectName(QStringLiteral("tab"));
         groupBox = new QGroupBox(tab);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(10, 0, 331, 291));
+        groupBox->setGeometry(QRect(10, 0, 331, 321));
         label = new QLabel(groupBox);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(20, 30, 131, 21));

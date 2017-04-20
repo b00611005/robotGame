@@ -23,11 +23,26 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setColumnCount(1);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
 
-    //    QImage image("/Users/mickie/Documents/Qt Porject/robotGame/img.jpeg");
-      QImage image("../img.jpeg");
+
+    //Background
+    QImage background("/Users/mickie/Documents/Qt Porject/robotGame/board.png");
+    QImage robot("/Users/mickie/Documents/Qt Porject/robotGame/android_robot.png");
+    background = background.scaledToHeight(450);
+    robot = robot.scaledToHeight(50);
+    QGraphicsPixmapItem* bgd = new QGraphicsPixmapItem(QPixmap::fromImage(background));
+    QGraphicsPixmapItem* robot1 = new QGraphicsPixmapItem(QPixmap::fromImage(robot));
     scene = new QGraphicsScene(this);
-    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-    scene->addItem(item);
+    robot1->setPos(15,15);
+    scene->addItem(bgd);
+    scene->addItem(robot1);
+    robot1->setFlag(QGraphicsItem::ItemIsMovable);
+
+    QPen blackpen(Qt::black);
+    QBrush redBrush(Qt::red);
+    blackpen.setWidth(6);
+    QGraphicsRectItem* rect1 = scene->addRect(8,8,40,40,blackpen,redBrush);
+    rect1->setFlag(QGraphicsItem::ItemIsMovable);
+
     ui->graphicsView->setScene(scene);
 }
 
