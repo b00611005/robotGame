@@ -44,7 +44,7 @@ No more possible actions!
 
 ## Installation
 ### Player
-The game is deployed into a dmg file for mac users. (Apologies to window users)
+The game is deployed into a dmg file (in bin folder) for mac users. (Apologies to window users)
 Open the dmg file, click on the roboyGame, and here you go.
 
 ### Developer
@@ -61,17 +61,17 @@ If you encounter "command not found: macdeployqt", please add the full path to m
 ## Usage
 Version1:
 
-![Screenshot](img/robotGame_v1.png)
-
 - Choose the initial pose of the robot.
 - Type some actions that you want the robot to move. (M,L,R seperated by ",")
 - Click Run, and the robot will start moving around the board.
 
+![Screenshot](img/robotGame_v1.png)
 
 Version2:
-
-![Screenshot](img/robotGame_v2.png)
 
 - Choose the initial, final pose of the robot, and the maxStep.
 - Click calculate, and there should be some valid sequences of moves provided. (If there's any)
 - Double click any move in the table, the robot will move according.
+
+![Screenshot](img/robotGame_v2.png)
+
