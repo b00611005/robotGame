@@ -47,10 +47,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		mainwindow.cpp \
-		robot.cpp moc_mainwindow.cpp
+		robot.cpp qrc_resources.cpp \
+		moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		robot.o \
+		qrc_resources.o \
 		moc_mainwindow.o
 DIST          = ../../../Qt/5.3/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.3/clang_64/mkspecs/qdevice.pri \
@@ -331,6 +333,7 @@ Makefile: robotGame.pro ../../../Qt/5.3/clang_64/mkspecs/macx-clang/qmake.conf .
 		../../../Qt/5.3/clang_64/mkspecs/features/yacc.prf \
 		../../../Qt/5.3/clang_64/mkspecs/features/lex.prf \
 		robotGame.pro \
+		resources.qrc \
 		/Users/mickie/Qt/5.3/clang_64/lib/QtWidgets.framework/QtWidgets.prl \
 		/Users/mickie/Qt/5.3/clang_64/lib/QtGui.framework/QtGui.prl \
 		/Users/mickie/Qt/5.3/clang_64/lib/QtCore.framework/QtCore.prl
@@ -452,6 +455,7 @@ Makefile: robotGame.pro ../../../Qt/5.3/clang_64/mkspecs/macx-clang/qmake.conf .
 ../../../Qt/5.3/clang_64/mkspecs/features/yacc.prf:
 ../../../Qt/5.3/clang_64/mkspecs/features/lex.prf:
 robotGame.pro:
+resources.qrc:
 /Users/mickie/Qt/5.3/clang_64/lib/QtWidgets.framework/QtWidgets.prl:
 /Users/mickie/Qt/5.3/clang_64/lib/QtGui.framework/QtGui.prl:
 /Users/mickie/Qt/5.3/clang_64/lib/QtCore.framework/QtCore.prl:
@@ -474,7 +478,7 @@ robotGame.app/Contents/Info.plist:
 	@sed -e "s,@SHORT_VERSION@,1.0,g" -e "s,@TYPEINFO@,????,g" -e "s,@ICON@,,g" -e "s,@BUNDLEIDENTIFIER@,com.yourcompany.robotGame,g" -e "s,@EXECUTABLE@,robotGame,g" -e "s,@TYPEINFO@,????,g" ../../../Qt/5.3/clang_64/mkspecs/macx-clang/Info.plist.app >robotGame.app/Contents/Info.plist
 dist: 
 	@test -d .tmp/robotGame1.0.0 || mkdir -p .tmp/robotGame1.0.0
-	$(COPY_FILE) --parents $(DIST) .tmp/robotGame1.0.0/ && $(COPY_FILE) --parents mainwindow.h robot.h .tmp/robotGame1.0.0/ && $(COPY_FILE) --parents main.cpp mainwindow.cpp robot.cpp .tmp/robotGame1.0.0/ && $(COPY_FILE) --parents mainwindow.ui .tmp/robotGame1.0.0/ && (cd `dirname .tmp/robotGame1.0.0` && $(TAR) robotGame1.0.0.tar robotGame1.0.0 && $(COMPRESS) robotGame1.0.0.tar) && $(MOVE) `dirname .tmp/robotGame1.0.0`/robotGame1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/robotGame1.0.0
+	$(COPY_FILE) --parents $(DIST) .tmp/robotGame1.0.0/ && $(COPY_FILE) --parents resources.qrc .tmp/robotGame1.0.0/ && $(COPY_FILE) --parents mainwindow.h robot.h .tmp/robotGame1.0.0/ && $(COPY_FILE) --parents main.cpp mainwindow.cpp robot.cpp .tmp/robotGame1.0.0/ && $(COPY_FILE) --parents mainwindow.ui .tmp/robotGame1.0.0/ && (cd `dirname .tmp/robotGame1.0.0` && $(TAR) robotGame1.0.0.tar robotGame1.0.0 && $(COMPRESS) robotGame1.0.0.tar) && $(MOVE) `dirname .tmp/robotGame1.0.0`/robotGame1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/robotGame1.0.0
 
 
 clean:compiler_clean 
@@ -497,8 +501,15 @@ check: first
 
 compiler_objective_c_make_all:
 compiler_objective_c_clean:
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_resources.cpp
+qrc_resources.cpp: resources.qrc \
+		img/pacman.png \
+		img/board.png \
+		img/star.png
+	/Users/mickie/Qt/5.3/clang_64/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
+
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
@@ -510,6 +521,18 @@ moc_mainwindow.cpp: ../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItem \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitem.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimeline \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qtimeline.h \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItemAnimation \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitemanimation.h \
+		robot.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimeLine \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QEventLoop \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qeventloop.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimer \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qtimer.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QDebug \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qdebug.h \
 		mainwindow.h
 	/Users/mickie/Qt/5.3/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Users/mickie/Qt/5.3/clang_64/mkspecs/macx-clang -I'/Users/mickie/Documents/Qt Porject/robotGame' -I/Users/mickie/Qt/5.3/clang_64/lib/QtWidgets.framework/Headers -I/Users/mickie/Qt/5.3/clang_64/lib/QtGui.framework/Headers -I/Users/mickie/Qt/5.3/clang_64/lib/QtCore.framework/Headers -F/Users/mickie/Qt/5.3/clang_64/lib mainwindow.h -o moc_mainwindow.cpp
 
@@ -529,7 +552,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -542,6 +565,18 @@ main.o: main.cpp mainwindow.h \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItem \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitem.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimeline \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qtimeline.h \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItemAnimation \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitemanimation.h \
+		robot.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimeLine \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QEventLoop \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qeventloop.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimer \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qtimer.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QDebug \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qdebug.h \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QApplication \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
@@ -555,17 +590,48 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItem \
 		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitem.h \
-		ui_mainwindow.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimeline \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qtimeline.h \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItemAnimation \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitemanimation.h \
+		robot.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimeLine \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QEventLoop \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qeventloop.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimer \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qtimer.h \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QDebug \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qdebug.h \
+		ui_mainwindow.h \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/QImage \
 		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qimage.h \
 		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QDir \
-		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qdir.h
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qdir.h \
+		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/QStandardItemModel \
+		../../../Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/Headers/qstandarditemmodel.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QThread \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qthread.h \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsRotation \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicstransform.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
-robot.o: robot.cpp robot.h
+robot.o: robot.cpp robot.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimeLine \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qtimeline.h \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItem \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitem.h \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItemAnimation \
+		../../../Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitemanimation.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QEventLoop \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qeventloop.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QTimer \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qtimer.h \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/QDebug \
+		../../../Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o robot.o robot.cpp
+
+qrc_resources.o: qrc_resources.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

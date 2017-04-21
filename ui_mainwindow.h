@@ -217,7 +217,9 @@ public:
         pushButton_CalRoutes->setGeometry(QRect(200, 160, 113, 32));
         tableWidget = new QTableWidget(groupBox_2);
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
+        tableWidget->setEnabled(true);
         tableWidget->setGeometry(QRect(10, 210, 311, 221));
+        tableWidget->setEditTriggers(QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed);
         label_14 = new QLabel(groupBox_2);
         label_14->setObjectName(QStringLiteral("label_14"));
         label_14->setGeometry(QRect(13, 139, 130, 20));
@@ -246,6 +248,12 @@ public:
         QObject::connect(spinBoxIniX, SIGNAL(valueChanged(int)), GUIsetPoseButton, SLOT(click()));
         QObject::connect(spinBoxIniY, SIGNAL(valueChanged(int)), GUIsetPoseButton, SLOT(click()));
         QObject::connect(comboBox_Direction, SIGNAL(activated(int)), GUIsetPoseButton, SLOT(click()));
+        QObject::connect(spinBoxIniX_2, SIGNAL(valueChanged(int)), GUIsetPoseButton, SLOT(click()));
+        QObject::connect(spinBoxIniY_2, SIGNAL(valueChanged(int)), GUIsetPoseButton, SLOT(click()));
+        QObject::connect(spinBoxFinalX, SIGNAL(valueChanged(int)), GUIsetPoseButton, SLOT(click()));
+        QObject::connect(spinBoxFinalY, SIGNAL(valueChanged(int)), GUIsetPoseButton, SLOT(click()));
+        QObject::connect(comboBox_FinalDir, SIGNAL(activated(int)), GUIsetPoseButton, SLOT(click()));
+        QObject::connect(comboBox_Direction_2, SIGNAL(activated(int)), GUIsetPoseButton, SLOT(click()));
 
         tabWidget->setCurrentIndex(0);
 

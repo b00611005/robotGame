@@ -28,11 +28,16 @@ private slots:
 
     void on_GUIsetPoseButton_clicked();
 
+    void on_tabWidget_currentChanged(int index);
+
+    void on_tableWidget_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     QGraphicsView *view;
     QGraphicsItem *robotIcon;
+    QGraphicsItem *dstIcon;
     Pose robot;
     Pose destination;
     //Animation

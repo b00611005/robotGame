@@ -504,6 +504,9 @@
        </property>
       </widget>
       <widget class="QTableWidget" name="tableWidget">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -511,6 +514,9 @@
          <width>311</width>
          <height>221</height>
         </rect>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed</set>
        </property>
       </widget>
       <widget class="QLabel" name="label_14">
@@ -627,6 +633,102 @@
     <hint type="destinationlabel">
      <x>403</x>
      <y>56</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxIniX_2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>GUIsetPoseButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>601</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>407</x>
+     <y>47</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxIniY_2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>GUIsetPoseButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>696</x>
+     <y>143</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>433</x>
+     <y>47</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxFinalX</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>GUIsetPoseButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>585</x>
+     <y>203</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>418</x>
+     <y>50</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxFinalY</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>GUIsetPoseButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>669</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>433</x>
+     <y>60</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox_FinalDir</sender>
+   <signal>activated(int)</signal>
+   <receiver>GUIsetPoseButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>803</x>
+     <y>197</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>416</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox_Direction_2</sender>
+   <signal>activated(int)</signal>
+   <receiver>GUIsetPoseButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>809</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>428</x>
+     <y>57</y>
     </hint>
    </hints>
   </connection>

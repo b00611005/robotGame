@@ -31,3 +31,8 @@ HEADERS  += mainwindow.h \
     robot.h
 
 FORMS    += mainwindow.ui
+
+DESTDIR = $$PWD
+
+RESOURCES += \
+    resources.qrc

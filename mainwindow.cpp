@@ -2,11 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QImage>
-#include <QDir>
-#include <QStandardItemModel>
-#include <QThread>
 #include "string"
-#include <QGraphicsRotation>
 #include <QGraphicsItemAnimation>
 #include <QTimeLine>
 
@@ -16,55 +12,51 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //PushButton setup
-    ui->GUIsetPoseButton->setVisible(false);
-
-    // comboBox setup
+    // ComboBox Setup
     QStringList directions;
     directions<<"N"<<"E"<<"S"<<"W";
     ui->comboBox_Direction->addItems(directions);
     ui->comboBox_Direction_2->addItems(directions);
     ui->comboBox_FinalDir->addItems(directions);
 
-    //tableView
+    //TableView Setup
     ui->tableWidget->setColumnCount(1);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
 
-    //Background
-    QImage background("/Users/mickie/Documents/Qt Porject/robotGame/board.png");
-    QImage robot("/Users/mickie/Documents/Qt Porject/robotGame/pacman.png");
-    background = background.scaledToHeight(450);
-    robot = robot.scaledToHeight(40);
 
-    QGraphicsPixmapItem* bgd = new QGraphicsPixmapItem(QPixmap::fromImage(background));
-    this->robotIcon = new QGraphicsPixmapItem(QPixmap::fromImage(robot));
+    //Load images
+    QImage bgImg(":/src/img/board.png");
+    QImage robotImg(":/src/img/pacman.png");
+    QImage dstImg(":/src/img/star.png");
+    bgImg = bgImg.scaledToHeight(450);
+    robotImg = robotImg.scaledToHeight(40);
+    dstImg = dstImg.scaledToHeight(40);
+
+    this->robotIcon = new QGraphicsPixmapItem(QPixmap::fromImage(robotImg));
+    this->dstIcon = new QGraphicsPixmapItem(QPixmap::fromImage(dstImg));
+    QGraphicsPixmapItem* bg = new QGraphicsPixmapItem(QPixmap::fromImage(bgImg));
+
     scene = new QGraphicsScene(this);
+    scene->addItem(bg);
+    scene->addItem(this->robotIcon);
+    scene->addItem(this->dstIcon);
+
+
     robotIcon->setTransformOriginPoint(20,20);
+    dstIcon->setTransformOriginPoint(20,20);
     setPose(ui->spinBoxIniX->value(),ui->spinBoxIniY->value(),ui->comboBox_Direction->currentText().toStdString().c_str()[0],&this->robot,this->robotIcon);
-    scene->addItem(bgd);
-    scene->addItem(robotIcon);
+    setPose(ui->spinBoxIniX->value(),ui->spinBoxIniY->value(),ui->comboBox_Direction->currentText().toStdString().c_str()[0],&this->robot,this->dstIcon);
+
 //    robotIcon->setFlag(QGraphicsItem::ItemIsMovable);
-
-    //Animation Zone
-//    timeLine = new QTimeLine;
-
-    robotAnimation = new QGraphicsItemAnimation;
-         robotAnimation->setItem(robotIcon);
-         robotAnimation->setTranslationAt(0,0,0);
-//         robotAnimation->setTimeLine(timeLine);
-////              robotAnimation->setRotationAt(0, 0);
-////              robotAnimation->setRotationAt(1, 90);
-////         robotAnimation->setTranslationAt(0,0,0);
-////         robotAnimation->setTranslationAt(1,0,-56);
-
-//    timeLine->setUpdateInterval(40);
-//    timeLine->setLoopCount(0);
-//    timeLine->setCurveShape(QTimeLine::SineCurve);
-//    timeLine->setDuration(1000);
-//    timeLine->start();
-
-
     ui->graphicsView->setScene(scene);
+
+    //GUI Elements Visable Setup.
+    ui->GUIsetPoseButton->setVisible(false);
+    dstIcon->setVisible(false);
+
+    //Animation Initialization
+    robotAnimation = new QGraphicsItemAnimation;
+    robotAnimation->setItem(robotIcon);
 }
 
 MainWindow::~MainWindow()
@@ -76,17 +68,16 @@ void MainWindow::on_pushButton_clicked()
 {
     setPose(ui->spinBoxIniX->value(), ui->spinBoxIniY->value(),
             ui->comboBox_Direction->currentText().toStdString().c_str()[0],&this->robot, this->robotIcon);
-    printf("Robot: (%d, %d, %d)\n", this->robot.x, this->robot.y, this->robot.dir);
-    fflush(stdout);
-    QStringList moves = ui->textEdit_moves->toPlainText().split(',');
 
-    for(int i = 0; i < moves.length(); i++){
-        robotMove(moves.at(i).toStdString()[0], &this->robot, this->robotAnimation);
-//        robotAnimation->setTranslationAt(0,0,0);
-//        robotAnimation->setTranslationAt(1,robot);
+    qDebug() << "Robot: ( " << this->robot.x << ", " << this->robot.y << ", " << this->robot.dir <<")\n";
+    QString moves = ui->textEdit_moves->toPlainText();
+    moves.replace(" ", "");
+    QStringList cmds = ui->textEdit_moves->toPlainText().split(',');
+
+    for(int i = 0; i < cmds.length(); i++){
+        robotMove(cmds.at(i).toStdString()[0], &this->robot, this->robotAnimation);
     }
-    printf("Final Robot: (%d, %d, %d)\n", this->robot.x, this->robot.y, this->robot.dir);
-    fflush(stdout);
+    qDebug() << "Final Robot: ( " << this->robot.x << ", " << this->robot.y << ", " << this->robot.dir <<")\n";
 }
 
 
@@ -99,8 +90,12 @@ void MainWindow::on_pushButton_CalRoutes_clicked()
     setPose(ui->spinBoxIniX_2->value(), ui->spinBoxIniY_2->value(),
             ui->comboBox_Direction_2->currentText().toStdString().c_str()[0],&this->robot, this->robotIcon);
     setPose(ui->spinBoxFinalX->value(), ui->spinBoxFinalY->value(),
-            ui->comboBox_FinalDir->currentText().toStdString().c_str()[0],&this->destination, this->robotIcon);
+            ui->comboBox_FinalDir->currentText().toStdString().c_str()[0],&this->destination, this->dstIcon);
+
+    //Calculate posible routes
     dfs(routes, candidate, &this->robot, &this->destination, 0, ui->spinBox_maxSteps->value());
+
+    //Display the result on the table
     ui->tableWidget->setRowCount(routes.size());
     for(int i = 0; i < (int) routes.size(); i++){
         std::string temp;
@@ -109,13 +104,43 @@ void MainWindow::on_pushButton_CalRoutes_clicked()
         }
         ui->tableWidget->setItem(i-1,1, new QTableWidgetItem(QString::fromStdString(temp)));
     }
-    printf("Calculatoin Done: %d\n", (int)routes.size());
-    fflush(stdout);
+
+    qDebug() << "Calculatoin Done: %d\n";
 }
 
 void MainWindow::on_GUIsetPoseButton_clicked()
 {
-    setPose(ui->spinBoxIniX->value(), ui->spinBoxIniY->value(),
-            ui->comboBox_Direction->currentText().toStdString().c_str()[0],&this->robot, this->robotIcon);
+    //Update the icon poses.
+    if(ui->tabWidget->currentIndex() == 0){
+        setPose(ui->spinBoxIniX->value(), ui->spinBoxIniY->value(),
+                ui->comboBox_Direction->currentText().toStdString().c_str()[0],&this->robot, this->robotIcon);
+    }else{
+        setPose(ui->spinBoxIniX_2->value(), ui->spinBoxIniY_2->value(),
+                ui->comboBox_Direction_2->currentText().toStdString().c_str()[0],&this->robot, this->robotIcon);
+        setPose(ui->spinBoxFinalX->value(), ui->spinBoxFinalY->value(),
+                ui->comboBox_FinalDir->currentText().toStdString().c_str()[0],&this->destination, this->dstIcon);
+    }
+}
 
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    if( index ==0)
+        this->dstIcon->setVisible(false);
+    else
+        this->dstIcon->setVisible(true);
+
+    //Update the icon position
+    this->on_GUIsetPoseButton_clicked();
+}
+
+void MainWindow::on_tableWidget_doubleClicked(const QModelIndex &index)
+{
+    //Reset the pose of icons.
+    this->on_GUIsetPoseButton_clicked();
+
+    //Move icons based on the moves.
+    std::string moves = ui->tableWidget->item(index.row(), 0)->text().toStdString();
+    for(int i = 0; i < (int)moves.length(); i++){
+        robotMove(moves.at(i), &this->robot, this->robotAnimation);
+    }
 }

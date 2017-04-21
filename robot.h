@@ -1,32 +1,42 @@
 #ifndef ROBOT_H
 #define ROBOT_H
+#include <QTimeLine>
+#include <QGraphicsItem>
+#include <QGraphicsItemAnimation>
+#include <QEventLoop>
+#include <QTimer>
+#include <QDebug>
 
-//#include "stdio.h"
-//#include "stdlib.h"
-//#include "string"
-//#include "vector"
-
+//Spec of the board
+#define STEP 56
+#define OFFSET 10
 #define BOARDSIZE 8
+
+static const int moves[5] = {0, 1, 0, -1, 0};
+static const char commands[3] = {'L','R','M'};
 
 struct Pose{
     int x;
     int y;
     int dir;
+    bool operator==(const Pose rhs)
+    {
+        if(this->x == rhs.x && this->y == rhs.y && this->dir == rhs.dir)
+           return true;
+        else
+            return false;
+    }
 };
-static const int moves[5] = {0, 1, 0, -1, 0};
-static const char movements[3] = {'L','R','M'};
 
 
-//method
+
+//Methods
+
 void setPose(int, int, char, Pose*, QGraphicsItem*);
 
-bool comparePose(Pose* orign, Pose* target);
+bool robotMove(char, Pose*, QGraphicsItemAnimation* rb = NULL);
 
-void copyPose(Pose orign, Pose* target);
-
-bool robotMove(char, Pose*, QGraphicsItemAnimation* = NULL);
-
-void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose* robot, Pose* dest, int cnt, int maxCnt);
+void dfs(std::vector<std::vector<char> >&, std::vector<char>&, Pose*, Pose*, int, int);
 
 
 //Animation Zone
