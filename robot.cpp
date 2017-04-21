@@ -49,9 +49,9 @@ void setPose(int x, int y, char dir, Pose* object, QGraphicsItem * rb){
 bool robotMove(char move, Pose* robot, QGraphicsItemAnimation * rb){
 
     //Turns
-    if(move == 'L' || move == 'R' || move == 'l' || move == 'r'){
+    if(move == 'L' || move == 'R'){
         int nextDir = 0;
-        if(move == 'L' || move =='l'){
+        if(move == 'L'){
             nextDir = robot->dir - 1;
         }else if(move == 'R' || move == 'r'){
             nextDir = robot->dir + 1;
@@ -65,7 +65,7 @@ bool robotMove(char move, Pose* robot, QGraphicsItemAnimation * rb){
         //Update robot pose
         robot->dir = nextDir;
 
-    }else if(move == 'M' || move == 'm'){
+    }else if(move == 'M'){
     //Move Forward
         int nextX = robot->x + moves[robot->dir];
         int nextY = robot->y + moves[(robot->dir+1)%4];

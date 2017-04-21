@@ -29,7 +29,6 @@ struct Pose{
 };
 
 
-
 //Methods
 
 void setPose(int, int, char, Pose*, QGraphicsItem*);
