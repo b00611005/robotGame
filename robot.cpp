@@ -71,7 +71,8 @@ bool robotMove(char move, Pose* robot, QGraphicsItemAnimation * rb){
         int nextY = robot->y + moves[(robot->dir+1)%4];
 
         if( nextX == 0 || nextX > BOARDSIZE || nextY ==0 || nextY > BOARDSIZE){
-            qDebug() << "Invalid Move : Bump in the wall\n";
+            if(rb!=NULL)    //Only display when moving icon
+                qDebug() << "Invalid Move : Bump in the wall\n";
             return false;
         }else{
             if(rb!=NULL) //if wanna move icon on the board.
@@ -82,7 +83,8 @@ bool robotMove(char move, Pose* robot, QGraphicsItemAnimation * rb){
             robot->y = nextY;
         }
     }else{
-        qDebug() << "Invalid Move : Unrecognized Command.\n";
+        if(rb!=NULL)    //Only display when moving icon
+            qDebug() << "Invalid Move : Unrecognized Command.\n";
         return false;
     }
     return true;
@@ -92,9 +94,9 @@ bool robotMove(char move, Pose* robot, QGraphicsItemAnimation * rb){
 
 void dfs(std::vector<std::vector<char> > &routes, std::vector<char> &candidate, Pose*robot, Pose*dst, int stepCnt, int maxStep){
 
-    if( stepCnt > maxStep )	return; //Exceed maxStep
+    if( stepCnt > maxStep )	return; //Exceed maxStep, return
 
-    if(*robot == *dst){    //Reach destination
+    if(*robot == *dst){    //Reach destination, legal route
         routes.push_back(candidate);
     }
 

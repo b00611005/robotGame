@@ -7,6 +7,7 @@
 #include <QGraphicsItem>
 #include <QTimeline>
 #include <QGraphicsItemAnimation>
+#include <QTextBrowser>
 #include "robot.h"
 
 namespace Ui {
@@ -22,7 +23,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButton_run_clicked();
 
     void on_pushButton_CalRoutes_clicked();
 
@@ -33,6 +34,11 @@ private slots:
     void on_tableWidget_doubleClicked(const QModelIndex &index);
 
 private:
+
+    //Methods
+    void displayText(Pose pose, QString text, QTextBrowser* display);
+
+    //Objects
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     QGraphicsView *view;
@@ -43,8 +49,9 @@ private:
     //Animation
     QTimeLine* timeLine;
     QGraphicsItemAnimation *robotAnimation;
-
     static int maxCnt;
+
+
 };
 
 #endif // MAINWINDOW_H
