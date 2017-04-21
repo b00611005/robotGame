@@ -2,7 +2,7 @@
 This is a robot game visualized with animation built with Qt creator in C++. 
 
 ## **Game Rule**:
-The board is set to be a 8x8 squre board, with its positive X-axis defined as East, and positive Y-axis defined as North(pointing upward). The position of the left down cell is (1, 1), and the right up celll is (8, 8). The robot can navigate thorugh the board with some valid actions.
+The board is set to be a 8x8 squre board, with its positive X-axis defined as East, and positive Y-axis defined as North(pointing upward). The coordinates of the bottom-left cell is (1, 1), and the top-right celll is (8, 8). The robot can navigate thorugh the board with some valid actions.
 
 Valid Actions:
 - M: Move forward
@@ -14,7 +14,7 @@ Constraints:
 At a boundary, the robot can only turn left/right.
 
 ### Version 1:
-Given a starting position [x, y] (0 < x, y < 9), direction faced (W, S, N, E)
+Given a starting position [x, y] (1 <= x, y <= 8), direction faced (W, S, N, E)
 on a 8x8 square board, and a sequence of actions (M, L, R) for a robot, calculate
 its final position and direction on the board.
 
@@ -44,8 +44,8 @@ No more possible actions!
 
 ## Installation
 ### Player
-The game is deployed into a dmg file (in bin folder) for mac users. (Apologies to window users)
-Open the dmg file, click on the roboyGame, and here you go.
+The game is packaged into a .dmg file (in the /bin folder) for mac users. (Apologies to window users)
+Download and open the .dmg file, click on the robotGame icon, and there you go.
 
 ### Developer
 For those who want to continue the project, Qt Creator is needed. The project is developed unter QT 5.3, and any version higher than this should be no problem.
@@ -62,16 +62,16 @@ If you encounter "command not found: macdeployqt", please add the full path to m
 Version1:
 
 - Choose the initial pose of the robot.
-- Type some actions that you want the robot to move. (M,L,R seperated by ",")
+- Type in a sequence of actions. (M, L, R separated by ",".)"
 - Click Run, and the robot will start moving around the board.
 
 ![Screenshot](img/robotGame_v1.png)
 
 Version2:
 
-- Choose the initial, final pose of the robot, and the maxStep.
-- Click calculate, and there should be some valid sequences of moves provided. (If there's any)
-- Double click any move in the table, the robot will move according.
+- Choose the robot’s initial pose, final pose, as well as the maximum number of steps allowed.
+- Click on the Calculate button, and valid move sequences (if any) will be displayed.
+- Double click on any move sequences in the table, and the robot will move accordingly.
 
 ![Screenshot](img/robotGame_v2.png)
 
