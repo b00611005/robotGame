@@ -24,8 +24,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    robot.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    robot.h
 
 FORMS    += mainwindow.ui
+
+DESTDIR = $$PWD
+
+RESOURCES += \
+    resources.qrc
